@@ -1,5 +1,19 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { isAllowedExtensionCallback, safeNext } from "./config";
+
+/**
+ * The allowlist is read from the environment at module load, so testing a *populated*
+ * one means re-importing the module with the variable set. The function is otherwise
+ * identical, which is why only the allowlist branch is exercised this way.
+ */
+async function withIds(value: string) {
+  const previous = process.env.AXON_EXTENSION_ID;
+  process.env.AXON_EXTENSION_ID = value;
+  vi.resetModules();
+  const mod = await import("./config");
+  process.env.AXON_EXTENSION_ID = previous;
+  return mod.isAllowedExtensionCallback;
+}
 
 /**
  * These two functions are the whole of what stands between the connect page and an
@@ -39,6 +53,19 @@ describe("isAllowedExtensionCallback", () => {
     expect(
       isAllowedExtensionCallback("https://zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz.chromiumapp.org/"),
     ).toBe(false);
+  });
+
+  it("accepts every id it was given, so dev and release can both sign in", async () => {
+    const OTHER = "ponmlkjihgfedcbaponmlkjihgfedcba";
+    // The case this exists for: one deployed app facing an unpacked development copy
+    // and the Web Store release at the same time.
+    const allowed = await withIds(` ${ID} , ${OTHER.toUpperCase()} `);
+
+    expect(allowed(`https://${ID}.chromiumapp.org/axon`)).toBe(true);
+    expect(allowed(`https://${OTHER}.chromiumapp.org/axon`)).toBe(true);
+    expect(allowed("https://aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.chromiumapp.org/axon")).toBe(
+      false,
+    );
   });
 
   it("insists on https", () => {

@@ -29,15 +29,29 @@ export const MIN_PASSWORD_LENGTH = 10;
  * and that URL is the one thing the connect page is handed by a caller rather than
  * deciding for itself. Accepting it unchecked would make this page an open redirect
  * that a code is attached to, so it is matched against this shape — and, when
- * AXON_EXTENSION_ID is set, against that one id.
+ * AXON_EXTENSION_ID lists ids, against those.
  */
-// Lower-cased on the way in. A URL's hostname is case-insensitive and `new URL()`
-// normalises it, so an id configured in any other case would never match and every
-// sign-in would be refused with "that did not come from the Axon extension" — true of
-// nothing, and very hard to guess from.
-export const EXTENSION_ID = (process.env.AXON_EXTENSION_ID ?? "")
-  .trim()
-  .toLowerCase();
+/**
+ * Which extensions this deployment will hand a session to.
+ *
+ * A list, not one id, because the same deployed app normally faces more than one build
+ * at a time: an unpacked development copy has a different id from the Web Store
+ * release, and during a rollout both are real. Pinning one would mean choosing which
+ * of your own extensions is allowed to sign in.
+ *
+ * Lower-cased on the way in. A URL's hostname is case-insensitive and `new URL()`
+ * normalises it, so an id configured in any other case would never match and every
+ * sign-in would be refused with "that did not come from the Axon extension" — true of
+ * nothing, and very hard to guess from.
+ *
+ * Empty accepts any `chromiumapp.org` callback. That is fine locally and is the default
+ * so development needs no configuration, but on a deployed app it means any extension
+ * whose callback asks can be approved by a reader who clicks Connect. Set it there.
+ */
+export const EXTENSION_IDS = (process.env.AXON_EXTENSION_ID ?? "")
+  .split(",")
+  .map((id) => id.trim().toLowerCase())
+  .filter(Boolean);
 
 export function isAllowedExtensionCallback(raw: string): boolean {
   let url: URL;
@@ -57,7 +71,7 @@ export function isAllowedExtensionCallback(raw: string): boolean {
   // caller doing something other than what this page is for.
   if (url.hash || url.search) return false;
 
-  return EXTENSION_ID ? match[1] === EXTENSION_ID : true;
+  return EXTENSION_IDS.length === 0 || EXTENSION_IDS.includes(match[1]);
 }
 
 /**

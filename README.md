@@ -14,8 +14,34 @@ npm run build
 npm run lint
 ```
 
-`AXON_API_URL` points at `axon-server`. `AXON_EXTENSION_ID` pins which extension the
-connect page will redirect to; leave it empty in development. See `.env.example`.
+`AXON_API_URL` points at `axon-server`. `AXON_EXTENSION_ID` is a comma-separated list of
+the extension ids this deployment will sign in; empty accepts any `chromiumapp.org`
+callback, which is the default so development needs no setup. See `.env.example`.
+
+## Pointing a development extension at a deployed app
+
+This is the normal development setup, and nothing in the extension's manifest has to
+change for it: `launchWebAuthFlow` opens the connect page in a window Chrome owns, not a
+`fetch` from the extension's origin, so the app's URL needs no host permission.
+
+Three values have to agree. In `ask-ai/src/shared/constants.js`:
+
+- `AXON_APP_URL` → the deployed app.
+- `AXON_API_URL` → **the same server the deployed app talks to.** This is the one that
+  bites. The code is minted in that server's database, so an extension exchanging it
+  against a different API finds nothing and reports "that sign-in link is no longer
+  valid" — a message written to not help, because distinguishing "no such code" from
+  "already spent" would let someone probe for codes. Here it would tell you nothing
+  while every URL looked right.
+
+And here, `AXON_EXTENSION_ID` → the unpacked extension's id from `chrome://extensions`.
+
+**An unpacked extension's id is derived from its folder path.** It is stable while the
+folder stays put, and different on another machine or after a move — so an id pinned in a
+deployed app stops matching when either happens. To fix the id for good, add a `key` to
+the extension's manifest (`chrome://extensions` → Pack extension gives you the `.pem` to
+derive it from); the unpacked build then keeps one id everywhere. Until then, expect to
+update this list when the folder moves, and keep both the dev and release ids in it.
 
 ## The browser never calls the API
 
