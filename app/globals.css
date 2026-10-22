@@ -1,0 +1,154 @@
+@import "tailwindcss";
+
+/*
+  Axon app tokens — the same palette as the console, deliberately: one product,
+  one substrate. Only the type scale is looser, because this is read once in a
+  while rather than lived in.
+
+  Every colour is a raw custom property redefined per theme, mapped once into
+  Tailwind's theme below. Components then say `bg-surface` / `text-muted` and
+  work in both modes without a single `dark:` variant — the theme switch happens
+  in one place rather than being restated on every element.
+
+  The plane is tinted toward the signal violet rather than neutral grey: the
+  service is about signals reaching a provider or failing to, and the one
+  saturated colour in the interface is the same hue as the substrate it sits on.
+*/
+
+:root {
+  color-scheme: light;
+
+  --plane: #eeeef2;
+  --surface: #ffffff;
+  --raised: #f7f7fa;
+  --line: #dedee6;
+  --line-strong: #c7c6d4;
+
+  --ink: #17162a;
+  --muted: #5c5a75;
+  --faint: #8b89a3;
+
+  /* Validated against #ffffff: lightness band, chroma, contrast all pass. */
+  --signal: #5b3fd9;
+  --signal-ink: #ffffff;
+  --signal-wash: #efecfd;
+
+  /* Status. Always shipped with a glyph and a word — never colour alone. */
+  --good: #0ca30c;
+  --warn: #fab219;
+  --crit: #d03b3b;
+  --good-wash: #e6f5e6;
+  --warn-wash: #fdf2dc;
+  --crit-wash: #fbe9e9;
+
+  --focus: #5b3fd9;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+
+    --plane: #131220;
+    --surface: #1c1a2b;
+    --raised: #232135;
+    --line: #2c2a3e;
+    --line-strong: #3d3a53;
+
+    --ink: #eae8f5;
+    --muted: #9b98b4;
+    --faint: #76738d;
+
+    /* Re-stepped for the dark surface, not an automatic flip. */
+    --signal: #8b6cf5;
+    --signal-ink: #140f2b;
+    --signal-wash: #272142;
+
+    --good: #0ca30c;
+    --warn: #fab219;
+    --crit: #d03b3b;
+    --good-wash: #16301b;
+    --warn-wash: #332713;
+    --crit-wash: #331a1d;
+
+    --focus: #8b6cf5;
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --plane: #131220;
+  --surface: #1c1a2b;
+  --raised: #232135;
+  --line: #2c2a3e;
+  --line-strong: #3d3a53;
+
+  --ink: #eae8f5;
+  --muted: #9b98b4;
+  --faint: #76738d;
+
+  --signal: #8b6cf5;
+  --signal-ink: #140f2b;
+  --signal-wash: #272142;
+
+  --good: #0ca30c;
+  --warn: #fab219;
+  --crit: #d03b3b;
+  --good-wash: #16301b;
+  --warn-wash: #332713;
+  --crit-wash: #331a1d;
+
+  --focus: #8b6cf5;
+}
+
+@theme inline {
+  --color-plane: var(--plane);
+  --color-surface: var(--surface);
+  --color-raised: var(--raised);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+
+  --color-signal: var(--signal);
+  --color-signal-ink: var(--signal-ink);
+  --color-signal-wash: var(--signal-wash);
+
+  --color-good: var(--good);
+  --color-warn: var(--warn);
+  --color-crit: var(--crit);
+  --color-good-wash: var(--good-wash);
+  --color-warn-wash: var(--warn-wash);
+  --color-crit-wash: var(--crit-wash);
+
+  --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, "SFMono-Regular", monospace;
+}
+
+body {
+  background: var(--plane);
+  color: var(--ink);
+}
+
+/* One visible focus treatment everywhere, including keyboard-only navigation. */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Numbers that sit in columns must align; standalone figures must not. */
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
