@@ -3,12 +3,8 @@
 import { useActionState } from "react";
 import { Notice } from "@/components/brand";
 import { Field, SubmitButton } from "@/components/fields";
-import {
-  INITIAL_AUTH_STATE,
-  signIn,
-  signUp,
-  type AuthState,
-} from "@/lib/actions/auth";
+import { signIn, signUp } from "@/lib/actions/auth";
+import { INITIAL_AUTH_STATE, type AuthState } from "@/lib/form-state";
 import { MIN_PASSWORD_LENGTH } from "@/lib/config";
 
 /**

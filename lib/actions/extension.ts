@@ -3,12 +3,7 @@
 import { redirect } from "next/navigation";
 import { api, ApiError } from "@/lib/api";
 import { isAllowedExtensionCallback } from "@/lib/config";
-
-export interface ConnectState {
-  error: string | null;
-}
-
-export const INITIAL_CONNECT_STATE: ConnectState = { error: null };
+import type { ConnectState } from "@/lib/form-state";
 
 interface AuthorizeResponse {
   code: string;

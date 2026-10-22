@@ -3,12 +3,8 @@
 import { useActionState } from "react";
 import { Notice } from "@/components/brand";
 import { SubmitButton } from "@/components/fields";
-import {
-  connectExtension,
-  declineExtension,
-  INITIAL_CONNECT_STATE,
-  type ConnectState,
-} from "@/lib/actions/extension";
+import { connectExtension, declineExtension } from "@/lib/actions/extension";
+import { INITIAL_CONNECT_STATE, type ConnectState } from "@/lib/form-state";
 
 /**
  * The approval. Everything the handoff needs is a hidden input, because a Server

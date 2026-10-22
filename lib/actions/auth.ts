@@ -4,13 +4,8 @@ import { redirect } from "next/navigation";
 import { api, ApiError, apiPublic } from "@/lib/api";
 import { MIN_PASSWORD_LENGTH, safeNext } from "@/lib/config";
 import { clearSession, readSession, sessionFrom, writeSession } from "@/lib/session";
+import type { AuthState } from "@/lib/form-state";
 import type { AuthTokens } from "@/lib/types";
-
-export interface AuthState {
-  error: string | null;
-}
-
-export const INITIAL_AUTH_STATE: AuthState = { error: null };
 
 function friendlyError(error: unknown, credentials: string): string {
   if (error instanceof ApiError) {
