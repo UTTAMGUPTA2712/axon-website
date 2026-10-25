@@ -6,7 +6,10 @@ import { safeNext } from "@/lib/config";
 import { readSession } from "@/lib/session";
 import { AuthForm } from "../auth-form";
 
-export const metadata = { title: "Create an account — Axon" };
+export const metadata = {
+  title: "Create an account — Axon",
+  robots: { index: false, follow: false },
+};
 
 type Params = Promise<{ next?: string }>;
 
@@ -27,7 +30,7 @@ export default function RegisterPage({
         <RedirectIfSignedIn searchParams={searchParams} />
       </Suspense>
 
-      <div className="w-full max-w-[22rem]">
+      <div className="w-full max-w-[26rem] rounded-xl border border-line bg-surface p-8">
         <Brand
           title="Create an Axon account"
           lede="An account gives you a daily free quota and keeps your model choices across browsers. The extension also works with your own API key and no account at all."

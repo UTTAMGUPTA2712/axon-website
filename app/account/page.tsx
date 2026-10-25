@@ -5,7 +5,10 @@ import { readSession } from "@/lib/session";
 import type { Usage, User } from "@/lib/types";
 import { SignOutButton } from "./sign-out-button";
 
-export const metadata = { title: "Your Axon account" };
+export const metadata = {
+  title: "Your Axon account",
+  robots: { index: false, follow: false },
+};
 
 /**
  * Everything on this page reads the session cookie or an uncached fetch, so each
@@ -21,7 +24,7 @@ async function Identity() {
   );
 
   return (
-    <dl className="mt-8 divide-y divide-line border-y border-line">
+    <dl className="divide-y divide-line">
       <Row label="Signed in as" value={user.email} mono />
       {user.name && <Row label="Name" value={user.name} />}
       <Row label="Plan" value={user.plan?.name ?? "Free"} />
@@ -37,7 +40,7 @@ async function Quota() {
 
   if (usage.unlimited) {
     return (
-      <p className="mt-6 text-[13px] text-muted">
+      <p className="text-[13px] text-muted">
         Your plan has no daily prompt limit.{" "}
         <span className="font-mono tnum">{usage.used}</span> used today.
       </p>
@@ -48,10 +51,10 @@ async function Quota() {
   const fraction = limit > 0 ? Math.min(1, usage.used / limit) : 0;
 
   return (
-    <section className="mt-6">
+    <section>
       <div className="flex items-baseline justify-between">
-        <h2 className="text-[13px] font-medium text-muted">Today</h2>
-        <p className="font-mono text-[13px] tnum text-ink">
+        <h2 className="text-[13px] font-medium text-muted">Prompts today</h2>
+        <p className="font-mono text-[15px] tnum text-ink">
           {usage.used} / {limit}
         </p>
       </div>
@@ -61,7 +64,7 @@ async function Quota() {
       <div
         role="img"
         aria-label={`${usage.used} of ${limit} prompts used today`}
-        className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-raised"
+        className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-raised"
       >
         <div
           className="h-full bg-signal"
@@ -104,23 +107,27 @@ function Row({
 
 export default function AccountPage() {
   return (
-    <main className="mx-auto w-full max-w-[32rem] px-6 py-16">
+    <main className="mx-auto w-full max-w-[36rem] px-6 py-16">
       <Brand
         title="Your Axon account"
         lede="Your plan, today's quota, and the session the browser extension signs in with."
       />
 
-      <Suspense fallback={<div className="mt-8 h-32" />}>
-        <Identity />
-      </Suspense>
+      <div className="mt-8 rounded-xl border border-line bg-surface px-6 py-2">
+        <Suspense fallback={<div className="h-32" />}>
+          <Identity />
+        </Suspense>
+      </div>
 
-      <Suspense fallback={<div className="mt-6 h-20" />}>
-        <Quota />
-      </Suspense>
+      <div className="mt-4 rounded-xl border border-line bg-surface p-6">
+        <Suspense fallback={<div className="h-20" />}>
+          <Quota />
+        </Suspense>
+      </div>
 
-      <section className="mt-10 border-t border-line pt-6">
-        <h2 className="text-[13px] font-medium text-muted">The extension</h2>
-        <p className="mt-2 text-[13px] text-muted">
+      <section className="mt-4 rounded-xl border border-line bg-surface p-6">
+        <h2 className="text-[15px] font-medium text-ink">The extension</h2>
+        <p className="mt-2 text-[14px] leading-relaxed text-muted">
           Open Axon in your browser toolbar and choose{" "}
           <span className="text-ink">Log in to Axon</span>. It will bring you back
           here to approve the connection — you will not type your password into
@@ -128,7 +135,7 @@ export default function AccountPage() {
         </p>
       </section>
 
-      <div className="mt-10 border-t border-line pt-6">
+      <div className="mt-6">
         <SignOutButton />
       </div>
     </main>

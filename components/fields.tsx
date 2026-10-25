@@ -21,7 +21,7 @@ export function Field({
 }) {
   return (
     <div>
-      <label htmlFor={id} className="block text-[13px] text-muted">
+      <label htmlFor={id} className="block text-[13px] font-medium text-muted">
         {label}
       </label>
       <input
@@ -33,7 +33,7 @@ export function Field({
         autoFocus={autoFocus}
         placeholder={placeholder}
         aria-describedby={hint ? `${id}-hint` : undefined}
-        className="mt-1.5 w-full rounded-sm border border-line bg-surface px-3 py-2 text-[14px] text-ink outline-none placeholder:text-faint focus:border-signal"
+        className="mt-1.5 h-10 w-full rounded-md border border-line-strong bg-plane px-3 text-[14px] text-ink outline-none placeholder:text-faint focus:border-signal"
       />
       {hint && (
         <p id={`${id}-hint`} className="mt-1.5 text-[12px] text-faint">
@@ -57,14 +57,14 @@ export function SubmitButton({
 }) {
   const skin =
     tone === "signal"
-      ? "bg-signal text-signal-ink"
-      : "border border-line-strong bg-surface text-ink";
+      ? "bg-signal text-signal-ink hover:brightness-110"
+      : "border border-line-strong bg-surface text-ink hover:bg-raised";
 
   return (
     <button
       type="submit"
       disabled={pending}
-      className={`w-full rounded-sm px-3 py-2.5 text-[14px] font-medium ${skin} transition-opacity disabled:opacity-60`}
+      className={`h-10 w-full rounded-md px-3 text-[14px] font-medium ${skin} transition-[filter,background-color] duration-150 disabled:opacity-60`}
     >
       {pending ? pendingLabel : children}
     </button>

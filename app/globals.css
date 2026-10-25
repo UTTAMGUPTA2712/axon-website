@@ -1,105 +1,12 @@
 @import "tailwindcss";
+@import "./tokens.css";
 
 /*
-  Axon app tokens — the same palette as the console, deliberately: one product,
-  one substrate. Only the type scale is looser, because this is read once in a
-  while rather than lived in.
-
-  Every colour is a raw custom property redefined per theme, mapped once into
-  Tailwind's theme below. Components then say `bg-surface` / `text-muted` and
-  work in both modes without a single `dark:` variant — the theme switch happens
-  in one place rather than being restated on every element.
-
-  The plane is tinted toward the signal violet rather than neutral grey: the
-  service is about signals reaching a provider or failing to, and the one
-  saturated colour in the interface is the same hue as the substrate it sits on.
+  The account app reads the shared brand tokens (brand/tokens.css, copied here by
+  brand/sync.mjs). Every colour is a raw custom property redefined per theme and
+  mapped once into Tailwind's theme below, so components say `bg-surface` /
+  `text-muted` and work in both modes without a `dark:` variant.
 */
-
-:root {
-  color-scheme: light;
-
-  --plane: #eeeef2;
-  --surface: #ffffff;
-  --raised: #f7f7fa;
-  --line: #dedee6;
-  --line-strong: #c7c6d4;
-
-  --ink: #17162a;
-  --muted: #5c5a75;
-  --faint: #8b89a3;
-
-  /* Validated against #ffffff: lightness band, chroma, contrast all pass. */
-  --signal: #5b3fd9;
-  --signal-ink: #ffffff;
-  --signal-wash: #efecfd;
-
-  /* Status. Always shipped with a glyph and a word — never colour alone. */
-  --good: #0ca30c;
-  --warn: #fab219;
-  --crit: #d03b3b;
-  --good-wash: #e6f5e6;
-  --warn-wash: #fdf2dc;
-  --crit-wash: #fbe9e9;
-
-  --focus: #5b3fd9;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    color-scheme: dark;
-
-    --plane: #131220;
-    --surface: #1c1a2b;
-    --raised: #232135;
-    --line: #2c2a3e;
-    --line-strong: #3d3a53;
-
-    --ink: #eae8f5;
-    --muted: #9b98b4;
-    --faint: #76738d;
-
-    /* Re-stepped for the dark surface, not an automatic flip. */
-    --signal: #8b6cf5;
-    --signal-ink: #140f2b;
-    --signal-wash: #272142;
-
-    --good: #0ca30c;
-    --warn: #fab219;
-    --crit: #d03b3b;
-    --good-wash: #16301b;
-    --warn-wash: #332713;
-    --crit-wash: #331a1d;
-
-    --focus: #8b6cf5;
-  }
-}
-
-:root[data-theme="dark"] {
-  color-scheme: dark;
-
-  --plane: #131220;
-  --surface: #1c1a2b;
-  --raised: #232135;
-  --line: #2c2a3e;
-  --line-strong: #3d3a53;
-
-  --ink: #eae8f5;
-  --muted: #9b98b4;
-  --faint: #76738d;
-
-  --signal: #8b6cf5;
-  --signal-ink: #140f2b;
-  --signal-wash: #272142;
-
-  --good: #0ca30c;
-  --warn: #fab219;
-  --crit: #d03b3b;
-  --good-wash: #16301b;
-  --warn-wash: #332713;
-  --crit-wash: #331a1d;
-
-  --focus: #8b6cf5;
-}
 
 @theme inline {
   --color-plane: var(--plane);
@@ -123,8 +30,14 @@
   --color-warn-wash: var(--warn-wash);
   --color-crit-wash: var(--crit-wash);
 
-  --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-plex-mono), ui-monospace, "SFMono-Regular", monospace;
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SFMono-Regular", monospace;
+  --font-serif: var(--font-newsreader), Georgia, serif;
+
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 14px;
 }
 
 body {
@@ -136,7 +49,6 @@ body {
 :where(a, button, input, select, textarea, [tabindex]):focus-visible {
   outline: 2px solid var(--focus);
   outline-offset: 2px;
-  border-radius: 2px;
 }
 
 /* Numbers that sit in columns must align; standalone figures must not. */

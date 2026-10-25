@@ -6,7 +6,10 @@ import { safeNext } from "@/lib/config";
 import { readSession } from "@/lib/session";
 import { AuthForm } from "../auth-form";
 
-export const metadata = { title: "Sign in — Axon" };
+export const metadata = {
+  title: "Sign in — Axon",
+  robots: { index: false, follow: false },
+};
 
 type Params = Promise<{ expired?: string; next?: string }>;
 
@@ -38,7 +41,7 @@ export default function LoginPage({ searchParams }: { searchParams: Params }) {
         <RedirectIfSignedIn searchParams={searchParams} />
       </Suspense>
 
-      <div className="w-full max-w-[22rem]">
+      <div className="w-full max-w-[26rem] rounded-xl border border-line bg-surface p-8">
         <Brand
           title="Sign in to Axon"
           lede="One account for the web app and the browser extension."

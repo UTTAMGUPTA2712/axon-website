@@ -1,18 +1,37 @@
+/** The monogram: ink on paper, the same mark the extension carries. */
+export function Mark({ size = 24 }: { size?: number }) {
+  return (
+    <span
+      aria-hidden
+      style={{ width: size, height: size, fontSize: size * 0.58 }}
+      className="grid place-items-center rounded-md bg-ink font-semibold leading-none text-plane"
+    >
+      A
+    </span>
+  );
+}
+
 /**
- * The wordmark: a signal bar and a name. The bar is the only place the accent
- * appears unprompted, which is what keeps it meaning something everywhere else.
+ * The masthead of every public page: mark and name, then the page's own title in the
+ * display serif. The serif is the one place this surface speaks in a different voice
+ * from the extension; everything else is Geist.
  */
 export function Brand({ title, lede }: { title: string; lede?: string }) {
   return (
     <>
-      <div className="flex items-baseline gap-2.5">
-        <span aria-hidden className="h-5 w-[3px] bg-signal" />
-        <h1 className="text-[22px] font-semibold tracking-[-0.02em] text-ink">
-          {title}
-        </h1>
+      <div className="flex items-center gap-2.5">
+        <Mark />
+        <span className="text-[15px] font-semibold tracking-[-0.01em] text-ink">
+          Axon
+        </span>
       </div>
+      <h1 className="mt-8 font-serif text-[34px] font-medium leading-[1.1] tracking-[-0.01em] text-ink">
+        {title}
+      </h1>
       {lede && (
-        <p className="mt-2 max-w-[42ch] text-[13px] text-muted">{lede}</p>
+        <p className="mt-3 max-w-[44ch] text-[15px] leading-relaxed text-muted">
+          {lede}
+        </p>
       )}
     </>
   );
@@ -36,7 +55,7 @@ export function Notice({
   return (
     <p
       role={tone === "crit" ? "alert" : undefined}
-      className={`border-l-2 ${skin} px-3 py-2 text-[13px] text-ink`}
+      className={`rounded-md border ${skin} px-3 py-2.5 text-[13px] text-ink`}
     >
       {children}
     </p>

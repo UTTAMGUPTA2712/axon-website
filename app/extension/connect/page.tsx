@@ -79,7 +79,7 @@ export default function ConnectPage({
 }) {
   return (
     <main className="flex min-h-dvh items-center justify-center px-6 py-16">
-      <div className="w-full max-w-[24rem]">
+      <div className="w-full max-w-[26rem] rounded-xl border border-line bg-surface p-8">
         <Brand
           title="Connect the extension"
           lede="The Axon extension in this browser is asking to use your account."

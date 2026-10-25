@@ -13,6 +13,13 @@ import {
 const PUBLIC_PATHS = ["/login", "/register"];
 
 /**
+ * The marketing pages. They are the same for everyone, so the proxy leaves them alone
+ * entirely: no gate, and no token rotation that could bounce a reader with a stale
+ * cookie to the sign-in page.
+ */
+const OPEN_PATHS = ["/", "/privacy"];
+
+/**
  * The access token is rotated a minute before it expires, not at the instant: a
  * render that starts just inside the window would otherwise present a token that
  * expires mid-request.
@@ -45,6 +52,7 @@ function isPublic(pathname: string): boolean {
  */
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  if (OPEN_PATHS.includes(pathname)) return NextResponse.next();
   const session = decodeSession(request.cookies.get(SESSION_COOKIE)?.value);
 
   if (!session) {
@@ -101,5 +109,7 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico|.*\\.svg).*)"],
+  matcher: [
+    "/((?!_next/static|_next/image|assets/|favicon.ico|robots.txt|sitemap.xml|manifest.webmanifest|.*\\.(?:svg|png|ico)$).*)",
+  ],
 };

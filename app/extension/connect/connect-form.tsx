@@ -37,7 +37,7 @@ export function ConnectForm({
 
   return (
     <div className="mt-8">
-      <dl className="divide-y divide-line border-y border-line">
+      <dl className="divide-y divide-line rounded-md border border-line bg-plane px-4">
         <div className="flex items-baseline justify-between gap-4 py-3">
           <dt className="text-[13px] text-muted">Account</dt>
           <dd className="font-mono text-[14px] text-ink">{email}</dd>
