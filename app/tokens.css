@@ -1,10 +1,12 @@
 /*
   Axon brand tokens: the single source for every web surface.
 
-  Edit this file, then run `node brand/sync.mjs` to copy it into axon-website
-  and axon-admin (`--check` fails if a copy has drifted). The
-  extension keeps its own --axon-* names in axon-ai/design.css, dark-native; the
-  values there are this file's dark column.
+  This is the source (axon-app/brand/tokens.css). Edit it, then run
+  `node brand/sync.mjs` to copy it into app/ and axon-admin/app/, regenerate the
+  icon set from brand/icon-master.png, and write the dark column for the extension's
+  test. `--check` fails if any copy has drifted. The extension keeps its own --axon-*
+  names in ask-ai/design.css, dark-native; the values there are this file's dark
+  column, and ask-ai/tests/run.mjs asserts it.
 
   One system: blue-tinted graphite and cool paper, one ultramarine accent, flat
   surfaces with 1px borders, no shadows except on things that float. Light and

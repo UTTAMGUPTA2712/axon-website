@@ -1,20 +1,12 @@
 import type { MetadataRoute } from "next";
-import { SITE_URL } from "@/lib/site";
+import { PAGES, SITE_URL } from "@/lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  return [
-    {
-      url: `${SITE_URL}/`,
-      lastModified: "2026-10-12",
-      changeFrequency: "monthly",
-      priority: 1,
-      images: [`${SITE_URL}/assets/og-image.png`],
-    },
-    {
-      url: `${SITE_URL}/privacy`,
-      lastModified: "2026-10-12",
-      changeFrequency: "yearly",
-      priority: 0.4,
-    },
-  ];
+  return PAGES.map((page) => ({
+    url: `${SITE_URL}${page.path === "/" ? "/" : page.path}`,
+    lastModified: page.updated,
+    changeFrequency: page.changeFrequency,
+    priority: page.priority,
+    ...(page.path === "/" ? { images: [`${SITE_URL}/assets/og-image.png`] } : {}),
+  }));
 }

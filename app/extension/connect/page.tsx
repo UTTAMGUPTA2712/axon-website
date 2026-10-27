@@ -5,7 +5,7 @@ import { readSession } from "@/lib/session";
 import { ConnectForm } from "./connect-form";
 
 export const metadata = {
-  title: "Connect the Axon extension",
+  title: "Connect the extension",
   robots: { index: false, follow: false },
 };
 

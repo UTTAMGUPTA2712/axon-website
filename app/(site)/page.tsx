@@ -1,57 +1,13 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
 import { Colophon } from "@/components/site/colophon";
 import { Masthead } from "@/components/site/masthead";
 import { Plans, PlansFallback } from "@/components/site/plans";
 import { ReadingDock } from "@/components/site/reading-dock";
-import {
-  FAQ,
-  SITE_DESCRIPTION,
-  SITE_TITLE,
-  SOURCE_URL,
-  STORE_URL,
-  landingJsonLd,
-} from "@/lib/site";
+import { LandingJsonLd } from "@/components/site/landing-jsonld";
+import { DATA, FAQ, SOURCE_URL, STORE_URL, metadataFor } from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: `${SITE_TITLE} | Bring your own API key`,
-  description:
-    "Axon is a free, open-source Chrome extension that reads the page you're on. Summarize long pages, ask questions about what's on screen, and fill forms from your own profile. Your API key stays in your browser — bring your own from Gemini, Groq, OpenAI or any OpenAI-compatible endpoint.",
-  authors: [{ name: "Uttam Gupta" }],
-  alternates: { canonical: "/" },
-  robots: {
-    index: true,
-    follow: true,
-    "max-image-preview": "large",
-    "max-snippet": -1,
-    "max-video-preview": -1,
-  },
-  openGraph: {
-    type: "website",
-    locale: "en_US",
-    siteName: "Axon",
-    url: "/",
-    title: SITE_TITLE,
-    description: SITE_DESCRIPTION,
-    images: [
-      {
-        url: "/assets/og-image.png",
-        width: 1200,
-        height: 630,
-        type: "image/png",
-        alt: "Axon — AI screen assistant for Chrome, with your own API key",
-      },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: SITE_TITLE,
-    description:
-      "Summarize any page, ask questions about what's on screen, and autofill forms from your own profile. Your API key stays in your browser.",
-    images: [{ url: "/assets/og-image.png", alt: SITE_TITLE }],
-  },
-};
+export const metadata = metadataFor("/");
 
 const NAV = [
   { href: "#does", label: "What it does", section: true },
@@ -59,6 +15,7 @@ const NAV = [
   { href: "#setup", label: "Setup", section: true },
   { href: "#plans", label: "Plans", section: true },
   { href: "#questions", label: "Questions", section: true },
+  { href: "/pricing", label: "Pricing" },
   { href: "/privacy", label: "Privacy" },
 ];
 
@@ -73,12 +30,9 @@ const INSTALL_ICON = (
 export default function Landing() {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(landingJsonLd()).replace(/</g, "\\u003c"),
-        }}
-      />
+      <Suspense fallback={null}>
+        <LandingJsonLd />
+      </Suspense>
       <Masthead items={NAV} />
 
       {/* The document on the left is the page; the panel on the right reads it. That is
@@ -115,10 +69,10 @@ export default function Landing() {
                 <b>Free</b> and open source
               </span>
               <span>
-                <b>No account</b> to create
+                <b>Your own key</b>, kept in your browser
               </span>
               <span>
-                <b>No backend</b> of its own
+                An <b>account</b> is optional
               </span>
             </p>
           </section>
@@ -157,11 +111,12 @@ export default function Landing() {
           <section className="chapter" id="keys" data-turn="keys">
             <h2>Where your keys and your data go</h2>
             <p>
-              <span className="mark">There is no Axon server.</span> You bring a key from a
-              provider you already trust, Axon keeps it in Chrome&apos;s own{" "}
-              <code>chrome.storage.sync</code>, and requests go from your browser straight
-              to that provider. Nothing is proxied, logged or kept by us, because there is
-              no &quot;us&quot; in the request path at all.
+              <span className="mark">Signed out, there is no Axon server in the request path.</span>{" "}
+              You bring a key from a provider you already trust, Axon keeps it in
+              Chrome&apos;s own <code>chrome.storage.sync</code>, and requests go from your
+              browser straight to that provider. Nothing is proxied, logged or kept by us.
+              Signing in is the one thing that changes this, and it is covered{" "}
+              <a href="#plans">below</a> and in the <Link href="/privacy">privacy policy</Link>.
             </p>
 
             <div className="ledger">
@@ -238,7 +193,7 @@ export default function Landing() {
             <p>
               Everything above works with a key of your own and no account. An Axon account
               is the alternative: prompts run on our servers against a daily allowance, and
-              the only thing you configure is which model to use.
+              the only thing you configure is which model to use. {DATA.signedIn}
             </p>
 
             <Suspense fallback={<PlansFallback />}>
@@ -271,7 +226,7 @@ export default function Landing() {
         <ReadingDock />
       </main>
 
-      <Colophon about="landing" />
+      <Colophon />
     </>
   );
 }

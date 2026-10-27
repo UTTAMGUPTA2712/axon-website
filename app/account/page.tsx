@@ -6,7 +6,7 @@ import type { Usage, User } from "@/lib/types";
 import { SignOutButton } from "./sign-out-button";
 
 export const metadata = {
-  title: "Your Axon account",
+  title: "Your account",
   robots: { index: false, follow: false },
 };
 

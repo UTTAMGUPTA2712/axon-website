@@ -7,7 +7,7 @@ import { readSession } from "@/lib/session";
 import { AuthForm } from "../auth-form";
 
 export const metadata = {
-  title: "Create an account — Axon",
+  title: "Create an account",
   robots: { index: false, follow: false },
 };
 

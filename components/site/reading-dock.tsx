@@ -49,8 +49,9 @@ const TRANSCRIPT: Record<string, { q: string; a: ReactNode }> = {
           the provider you configured.
         </p>
         <p>
-          This section states there is no Axon server in the request path, and no
-          analytics or third-party scripts.
+          This section says that signed out there is no Axon server in the request path,
+          that signing in changes that, and that there are no analytics or third-party
+          scripts.
         </p>
         {meta("read this section · chat · llama-3.3-70b")}
       </>
@@ -75,7 +76,7 @@ const TRANSCRIPT: Record<string, { q: string; a: ReactNode }> = {
       <>
         <p>
           No. The page says a key of your own costs nothing and is the default; an
-          account is the alternative for readers who would rather not hold one.
+          account is the optional alternative, and it sends your prompts through Axon&apos;s server.
         </p>
         <p>
           The plans beside this answer are read from the Axon API when it is reachable,

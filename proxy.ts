@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { rotateTokens } from "@/lib/api";
 import { SESSION_COOKIE } from "@/lib/config";
+import { PAGES } from "@/lib/site";
 import {
   decodeSession,
   encodeSession,
@@ -17,7 +18,7 @@ const PUBLIC_PATHS = ["/login", "/register"];
  * entirely: no gate, and no token rotation that could bounce a reader with a stale
  * cookie to the sign-in page.
  */
-const OPEN_PATHS = ["/", "/privacy"];
+const OPEN_PATHS: string[] = PAGES.map((page) => page.path);
 
 /**
  * The access token is rotated a minute before it expires, not at the instant: a

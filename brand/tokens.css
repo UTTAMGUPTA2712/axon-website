@@ -1,0 +1,105 @@
+/*
+  Axon brand tokens: the single source for every web surface.
+
+  This is the source (axon-app/brand/tokens.css). Edit it, then run
+  `node brand/sync.mjs` to copy it into app/ and axon-admin/app/, regenerate the
+  icon set from brand/icon-master.png, and write the dark column for the extension's
+  test. `--check` fails if any copy has drifted. The extension keeps its own --axon-*
+  names in ask-ai/design.css, dark-native; the values there are this file's dark
+  column, and ask-ai/tests/run.mjs asserts it.
+
+  One system: blue-tinted graphite and cool paper, one ultramarine accent, flat
+  surfaces with 1px borders, no shadows except on things that float. Light and
+  dark share roles, not values: each text tone is chosen to clear 4.5:1 on its
+  own surfaces, and each control border (--line-strong) to clear 3:1.
+*/
+
+:root {
+  color-scheme: light;
+
+  --plane: #f6f7f9;
+  --surface: #ffffff;
+  --raised: #f0f2f5;
+  --line: #dde1e8;
+  --line-strong: #7f8a9d;
+
+  --ink: #12151c;
+  --muted: #4c5565;
+  --faint: #5f6a7c;
+
+  --signal: #2b44d6;
+  --signal-ink: #ffffff;
+  --signal-wash: #e8ecfd;
+
+  /* Status. Always shipped with a glyph and a word, never colour alone. */
+  --good: #16794c;
+  --warn: #9a6200;
+  --crit: #b42318;
+  --good-wash: #e6f4ec;
+  --warn-wash: #fbf1dc;
+  --crit-wash: #fbe9e7;
+
+  --focus: #2b44d6;
+
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 14px;
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+
+    --plane: #0e1117;
+    --surface: #151922;
+    --raised: #1c212c;
+    --line: #262c39;
+    --line-strong: #6b778c;
+
+    --ink: #e8ecf3;
+    --muted: #a3adbd;
+    --faint: #8591a5;
+
+    --signal: #8ea4ff;
+    --signal-ink: #0b1030;
+    --signal-wash: #1b2342;
+
+    --good: #4cc38a;
+    --warn: #e0a83a;
+    --crit: #f2796d;
+    --good-wash: #14291f;
+    --warn-wash: #2c2312;
+    --crit-wash: #301a18;
+
+    --focus: #8ea4ff;
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --plane: #0e1117;
+  --surface: #151922;
+  --raised: #1c212c;
+  --line: #262c39;
+  --line-strong: #6b778c;
+
+  --ink: #e8ecf3;
+  --muted: #a3adbd;
+  --faint: #8591a5;
+
+  --signal: #8ea4ff;
+  --signal-ink: #0b1030;
+  --signal-wash: #1b2342;
+
+  --good: #4cc38a;
+  --warn: #e0a83a;
+  --crit: #f2796d;
+  --good-wash: #14291f;
+  --warn-wash: #2c2312;
+  --crit-wash: #301a18;
+
+  --focus: #8ea4ff;
+}

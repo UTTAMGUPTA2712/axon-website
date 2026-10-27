@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start -p 3002",
     "lint": "eslint",
-    "test": "vitest run"
+    "test": "node brand/sync.mjs --check && vitest run",
+    "brand": "node brand/sync.mjs"
   },
   "dependencies": {
     "next": "16.4.2",
