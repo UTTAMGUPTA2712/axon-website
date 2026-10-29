@@ -50,3 +50,26 @@ export interface AuthTokens {
   tokenType: string;
   user?: User;
 }
+
+/** One row of GET /prompts. */
+export interface PromptRow {
+  id: string;
+  feature: string;
+  input: string;
+  output: string | null;
+  status: "PENDING" | "COMPLETED" | "FAILED" | "CANCELLED";
+  modelUsed: string | null;
+  createdAt: string;
+}
+
+export interface Page<T> {
+  items: T[];
+  meta: { page: number; limit: number; total: number; pages: number };
+}
+
+/** GET /account/sessions. A session is a refresh token; the token itself never leaves the API. */
+export interface SessionRow {
+  id: string;
+  createdAt: string;
+  expiresAt: string;
+}

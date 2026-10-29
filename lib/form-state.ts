@@ -20,3 +20,11 @@ export interface ConnectState {
 }
 
 export const INITIAL_CONNECT_STATE: ConnectState = { error: null };
+
+/** For the account forms: an error to show, or a confirmation to show instead. */
+export interface AccountState {
+  error: string | null;
+  done: string | null;
+}
+
+export const INITIAL_ACCOUNT_STATE: AccountState = { error: null, done: null };

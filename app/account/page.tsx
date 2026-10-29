@@ -1,9 +1,12 @@
+import Link from "next/link";
 import { Suspense } from "react";
 import { AccountBar } from "@/components/site/account-bar";
 import { Brand } from "@/components/brand";
 import { api } from "@/lib/api";
 import { readSession } from "@/lib/session";
-import type { Usage, User } from "@/lib/types";
+import { revokeSession } from "@/lib/actions/account";
+import type { SessionRow, Usage, User } from "@/lib/types";
+import { DeleteForm, NameForm } from "./account-forms";
 import { SignOutButton } from "./sign-out-button";
 
 export const metadata = {
@@ -88,6 +91,47 @@ async function Quota() {
   );
 }
 
+async function Profile() {
+  const { user } = await api<{ user: User }>("/authenticate");
+  return <NameForm name={user.name ?? ""} />;
+}
+
+async function Sessions() {
+  const { items } = await api<{ items: SessionRow[] }>("/account/sessions");
+  return (
+    <section>
+      <h2 className="text-[15px] font-medium text-ink">
+        Where you are signed in
+      </h2>
+      <p className="mt-1 text-[13px] text-muted">
+        Each sign-in — a browser, or the extension — is one session. End any you
+        do not recognise.
+      </p>
+      <ul className="mt-3 divide-y divide-line">
+        {items.map((s) => (
+          <li
+            key={s.id}
+            className="flex items-center justify-between gap-4 py-2.5"
+          >
+            <span className="text-[13px] text-ink">
+              Signed in {new Date(s.createdAt).toLocaleString()}
+              <span className="block text-[12px] text-faint">
+                Expires {new Date(s.expiresAt).toLocaleDateString()}
+              </span>
+            </span>
+            <form action={revokeSession}>
+              <input type="hidden" name="id" value={s.id} />
+              <button className="text-[13px] text-muted underline">
+                End session
+              </button>
+            </form>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
 function Row({
   label,
   value,
@@ -130,6 +174,48 @@ export default function AccountPage() {
             <Quota />
           </Suspense>
         </div>
+
+        <section className="mt-4 rounded-xl border border-line bg-surface p-6">
+          <h2 className="text-[15px] font-medium text-ink">Profile</h2>
+          <div className="mt-3">
+            <Suspense fallback={<div className="h-24" />}>
+              <Profile />
+            </Suspense>
+          </div>
+        </section>
+
+        <section className="mt-4 rounded-xl border border-line bg-surface p-6">
+          <h2 className="text-[15px] font-medium text-ink">Prompt history</h2>
+          <p className="mt-2 text-[14px] leading-relaxed text-muted">
+            Every question you asked while signed in, with the answer.{" "}
+            <Link className="text-ink underline" href="/account/history">
+              Open your history
+            </Link>
+          </p>
+        </section>
+
+        <div className="mt-4 rounded-xl border border-line bg-surface p-6">
+          <Suspense fallback={<div className="h-24" />}>
+            <Sessions />
+          </Suspense>
+        </div>
+
+        <section className="mt-4 rounded-xl border border-line bg-surface p-6">
+          <h2 className="text-[15px] font-medium text-ink">Your data</h2>
+          <p className="mt-2 text-[14px] leading-relaxed text-muted">
+            Download everything Axon stores about this account — profile, saved
+            setup and prompt history — as one JSON file.
+          </p>
+          <p className="mt-3 text-[14px]">
+            {/* A file download, not a page: client-side navigation must not intercept it. */}
+            <a className="text-ink underline" href="/account/export" download>
+              Download my data
+            </a>
+          </p>
+          <div className="mt-5 border-t border-line pt-4">
+            <DeleteForm />
+          </div>
+        </section>
 
         <section className="mt-4 rounded-xl border border-line bg-surface p-6">
           <h2 className="text-[15px] font-medium text-ink">The extension</h2>
