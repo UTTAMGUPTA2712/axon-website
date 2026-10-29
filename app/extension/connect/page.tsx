@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { AccountBar } from "@/components/site/account-bar";
 import { Brand, Notice } from "@/components/brand";
 import { isAllowedExtensionCallback } from "@/lib/config";
 import { readSession } from "@/lib/session";
@@ -34,8 +35,11 @@ type Params = Promise<{
  * them on the account page.
  */
 async function Consent({ searchParams }: { searchParams: Params }) {
-  const { redirect_uri: redirectUri, code_challenge: codeChallenge, state } =
-    await searchParams;
+  const {
+    redirect_uri: redirectUri,
+    code_challenge: codeChallenge,
+    state,
+  } = await searchParams;
 
   if (!redirectUri || !isAllowedExtensionCallback(redirectUri)) {
     return (
@@ -78,17 +82,20 @@ export default function ConnectPage({
   searchParams: Params;
 }) {
   return (
-    <main className="flex min-h-dvh items-center justify-center px-6 py-16">
-      <div className="w-full max-w-[26rem] rounded-xl border border-line bg-surface p-8">
-        <Brand
-          title="Connect the extension"
-          lede="The Axon extension in this browser is asking to use your account."
-        />
+    <>
+      <AccountBar />
+      <main className="flex min-h-[calc(100dvh-4.5rem)] items-center justify-center px-6 py-16">
+        <div className="w-full max-w-[26rem] rounded-xl border border-line bg-surface p-8">
+          <Brand
+            title="Connect the extension"
+            lede="The Axon extension in this browser is asking to use your account."
+          />
 
-        <Suspense fallback={<div className="mt-8 h-56" />}>
-          <Consent searchParams={searchParams} />
-        </Suspense>
-      </div>
-    </main>
+          <Suspense fallback={<div className="mt-8 h-56" />}>
+            <Consent searchParams={searchParams} />
+          </Suspense>
+        </div>
+      </main>
+    </>
   );
 }

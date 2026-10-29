@@ -1,13 +1,8 @@
-/** The monogram: ink on paper, the same mark the extension carries. */
+/** The brand mark: the same artwork as the favicon and the extension's toolbar icon. */
 export function Mark({ size = 24 }: { size?: number }) {
   return (
-    <span
-      aria-hidden
-      style={{ width: size, height: size, fontSize: size * 0.58 }}
-      className="grid place-items-center rounded-md bg-ink font-semibold leading-none text-plane"
-    >
-      A
-    </span>
+    // eslint-disable-next-line @next/next/no-img-element -- a fixed, local, tiny asset
+    <img src="/icon-192.png" alt="" aria-hidden width={size} height={size} className="rounded-full" />
   );
 }
 

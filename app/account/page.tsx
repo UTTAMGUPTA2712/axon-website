@@ -1,4 +1,5 @@
 import { Suspense } from "react";
+import { AccountBar } from "@/components/site/account-bar";
 import { Brand } from "@/components/brand";
 import { api } from "@/lib/api";
 import { readSession } from "@/lib/session";
@@ -29,7 +30,10 @@ async function Identity() {
       {user.name && <Row label="Name" value={user.name} />}
       <Row label="Plan" value={user.plan?.name ?? "Free"} />
       {user.subscriptionStatus !== "NONE" && (
-        <Row label="Subscription" value={user.subscriptionStatus.toLowerCase()} />
+        <Row
+          label="Subscription"
+          value={user.subscriptionStatus.toLowerCase()}
+        />
       )}
     </dl>
   );
@@ -107,37 +111,40 @@ function Row({
 
 export default function AccountPage() {
   return (
-    <main className="mx-auto w-full max-w-[36rem] px-6 py-16">
-      <Brand
-        title="Your Axon account"
-        lede="Your plan, today's quota, and the session the browser extension signs in with."
-      />
+    <>
+      <AccountBar />
+      <main className="mx-auto w-full max-w-[36rem] px-6 py-16">
+        <Brand
+          title="Your Axon account"
+          lede="Your plan, today's quota, and the session the browser extension signs in with."
+        />
 
-      <div className="mt-8 rounded-xl border border-line bg-surface px-6 py-2">
-        <Suspense fallback={<div className="h-32" />}>
-          <Identity />
-        </Suspense>
-      </div>
+        <div className="mt-8 rounded-xl border border-line bg-surface px-6 py-2">
+          <Suspense fallback={<div className="h-32" />}>
+            <Identity />
+          </Suspense>
+        </div>
 
-      <div className="mt-4 rounded-xl border border-line bg-surface p-6">
-        <Suspense fallback={<div className="h-20" />}>
-          <Quota />
-        </Suspense>
-      </div>
+        <div className="mt-4 rounded-xl border border-line bg-surface p-6">
+          <Suspense fallback={<div className="h-20" />}>
+            <Quota />
+          </Suspense>
+        </div>
 
-      <section className="mt-4 rounded-xl border border-line bg-surface p-6">
-        <h2 className="text-[15px] font-medium text-ink">The extension</h2>
-        <p className="mt-2 text-[14px] leading-relaxed text-muted">
-          Open Axon in your browser toolbar and choose{" "}
-          <span className="text-ink">Log in to Axon</span>. It will bring you back
-          here to approve the connection — you will not type your password into
-          the extension.
-        </p>
-      </section>
+        <section className="mt-4 rounded-xl border border-line bg-surface p-6">
+          <h2 className="text-[15px] font-medium text-ink">The extension</h2>
+          <p className="mt-2 text-[14px] leading-relaxed text-muted">
+            Open Axon in your browser toolbar and choose{" "}
+            <span className="text-ink">Log in to Axon</span>. It will bring you
+            back here to approve the connection — you will not type your
+            password into the extension.
+          </p>
+        </section>
 
-      <div className="mt-6">
-        <SignOutButton />
-      </div>
-    </main>
+        <div className="mt-6">
+          <SignOutButton />
+        </div>
+      </main>
+    </>
   );
 }

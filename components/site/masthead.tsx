@@ -78,9 +78,8 @@ export function Masthead({ items }: { items: NavItem[] }) {
   return (
     <header className="masthead" ref={ref}>
       <Link className="masthead-brand" href="/">
-        <span className="masthead-mark" aria-hidden="true">
-          A
-        </span>
+        {/* eslint-disable-next-line @next/next/no-img-element -- fixed local asset */}
+        <img className="masthead-mark" src="/icon-192.png" alt="" width={24} height={24} />
         Axon
       </Link>
       <nav className="masthead-nav">

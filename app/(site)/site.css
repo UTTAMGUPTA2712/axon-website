@@ -137,15 +137,9 @@
 }
 
 .site .masthead-mark {
-    display: grid;
-    place-items: center;
     width: 24px;
     height: 24px;
-    border-radius: 6px;
-    background: var(--ink);
-    color: var(--paper);
-    font-size: 14px;
-    font-weight: 600;
+    border-radius: 50%;
 }
 
 .site .masthead-nav {
